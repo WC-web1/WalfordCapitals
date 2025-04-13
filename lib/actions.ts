@@ -1,5 +1,7 @@
 "use server"
 
+import nodemailer from "nodemailer"
+
 interface ContactFormData {
   name: string
   email: string
@@ -15,17 +17,23 @@ interface AppointmentFormData {
   time?: string
 }
 
+// Set up the transporter using environment variables
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USERNAME, // your Gmail email
+    pass: process.env.EMAIL_PASSWORD, // your Gmail app password (not your real Gmail password)
+  },
+})
+
+const CTO_EMAIL = "rayrahuldw@gmail.com"
+
 export async function sendContactEmail(formData: ContactFormData) {
   try {
-    // In a real application, you would use a service like Nodemailer, SendGrid, etc.
-    // For this demo, we'll simulate sending an email
-
-    // Validate form data
     if (!formData.name || !formData.email || !formData.message) {
       return { success: false, message: "Please fill in all required fields" }
     }
 
-    // Format the email content
     const subject = `New Contact Form Submission from ${formData.name}`
     const body = `
       Name: ${formData.name}
@@ -36,18 +44,15 @@ export async function sendContactEmail(formData: ContactFormData) {
       ${formData.message}
     `
 
-    // In a real application, you would send the email here
-    console.log("Sending email to CTO (rayrahuldw@gmail.com):")
-    console.log("Subject:", subject)
-    console.log("Body:", body)
+    const mailOptions = {
+      from: `"Website Contact" <${process.env.EMAIL_USERNAME}>`,
+      to: CTO_EMAIL,
+      subject,
+      text: body,
+    }
 
-    // For demonstration purposes, we'll just simulate a successful email send
-    // In a real application, you would check the response from your email service
+    await transporter.sendMail(mailOptions)
 
-    // Simulate a slight delay to make it feel more realistic
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Return success
     return { success: true, message: "Message sent successfully!" }
   } catch (error) {
     console.error("Error sending contact email:", error)
@@ -57,12 +62,10 @@ export async function sendContactEmail(formData: ContactFormData) {
 
 export async function bookAppointment(formData: AppointmentFormData) {
   try {
-    // Validate form data
     if (!formData.name || !formData.email) {
       return { success: false, message: "Please fill in all required fields" }
     }
 
-    // Format the email content
     const subject = `New Appointment Request from ${formData.name}`
     const body = `
       Name: ${formData.name}
@@ -70,19 +73,19 @@ export async function bookAppointment(formData: AppointmentFormData) {
       Phone: ${formData.phone || "Not provided"}
       Preferred Date: ${formData.date || "Not specified"}
       Preferred Time: ${formData.time || "Not specified"}
-      
+
       This user has requested to book a consultation appointment.
     `
 
-    // In a real application, you would send the email here
-    console.log("Sending appointment request to CTO (rayrahuldw@gmail.com):")
-    console.log("Subject:", subject)
-    console.log("Body:", body)
+    const mailOptions = {
+      from: `"Website Booking" <${process.env.EMAIL_USERNAME}>`,
+      to: CTO_EMAIL,
+      subject,
+      text: body,
+    }
 
-    // Simulate a slight delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await transporter.sendMail(mailOptions)
 
-    // Return success
     return { success: true, message: "Appointment request sent successfully!" }
   } catch (error) {
     console.error("Error booking appointment:", error)
