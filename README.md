@@ -1,7 +1,5 @@
 # Walford Capitals - AI-Powered Investment Platform
 
-![Walford Capitals](https://placeholder.svg?height=300&width=800&text=Walford+Capitals)
-
 ## Overview
 
 Walford Capitals is a modern investment platform that leverages artificial intelligence and machine learning to optimize investment portfolios. The platform provides advanced algorithms for portfolio optimization, risk management, and financial planning, helping investors maximize returns while minimizing risks.
