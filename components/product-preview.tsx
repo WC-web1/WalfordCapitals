@@ -187,7 +187,7 @@ export default function ProductPreview() {
         </div>
 
         {/* Testimonials Section */}
-        <div className="mt-20 max-w-4xl mx-auto">
+        {/* <div className="mt-20 max-w-4xl mx-auto">
           <ScrollReveal>
             <div className="text-center mb-8">
               <h3 className="text-2xl font-semibold text-white">What Beta Users Are Saying</h3>
@@ -224,9 +224,9 @@ export default function ProductPreview() {
                   ),
               )}
             </AnimatePresence>
-          </div>
+          </div> */}
 
-          <div className="flex justify-center mt-4 space-x-2">
+          {/* <div className="flex justify-center mt-4 space-x-2">
             {testimonials.map((_, index) => (
               <button
                 key={index}
@@ -238,7 +238,7 @@ export default function ProductPreview() {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Enhanced CTA Section */}
         <div className="mt-20 text-center">
