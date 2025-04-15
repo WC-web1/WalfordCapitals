@@ -7,33 +7,42 @@ import ScrollReveal from "@/components/scroll-reveal"
 import ThreeDCard from "@/components/3d-card"
 import ParallaxElement from "@/components/parallax-element"
 import VectorGraphic from "@/components/vector-graphic"
+import Image from "next/image"
 
 export default function Team() {
   const team = [
     {
+      name: "Ifham Banday",
+      role: "Co-Founder and CEO",
+      bio: "Hi, I’m Ifham — an entrepreneur building AI-powered financial solutions to revolutionize investing and create real-world impact.",
+      email: "ifhambanday@gmail.com",
+      phone: "",
+      linkedin: "https://www.linkedin.com/in/ifham-banday-924a26180",
+      image: "/images/team/ifham.png",
+    },
+    {
       name: "Rahul D. Ray",
       role: "Co-Founder and CTO",
-      bio: "A specialist in algorithmic trading and quantitative analysis, Rahul drives innovation by merging AI-powered solutions with traditional market insights. His leadership has boosted trade execution efficiency by 35% and increased portfolio returns by 20%, positioning Walford Capitals at the forefront of modern investment strategies.",
-      email: "rayrahuldw@gmail.com",
+      bio: "Architecting next-generation AI and algorithmic trading platforms to redefine quantitative finance.",
       phone: "6371575952",
       linkedin: "#",
+      image: "/images/team/rahul.png",
     },
     {
       name: "Rehan Nazir",
       role: "Co-Founder and CFO",
-      bio: "With expertise in financial modeling and market analysis, Rehan develops innovative investment strategies that combine traditional wisdom with cutting-edge AI insights.",
+      bio: "Responsible for overseeing a company's financial health and strategy.",
       email: "24f2009335@ds.study.iitm.ac.in",
       phone: "9419729705",
       linkedin: "https://www.linkedin.com/in/rehannazirdar",
+      image: "/images/team/rehan.png",
     },
     {
-      name: "Ifham Banday",
-      role: "CEO",
-      bio: "Specializing in machine learning and predictive analytics, Ifham builds the algorithms that power our portfolio optimization and risk management systems.",
-      email: "ifhambanday@gmail.com",
-      phone: "",
-      linkedin: "https://www.linkedin.com/in/ifham-banday-924a26180",
+      name: "Hani",
+      role: "Co-Founder and CMO",
+     
     },
+    
   ]
 
   return (
@@ -57,57 +66,71 @@ export default function Team() {
           <VectorGraphic type="wave" width={220} height={120} opacity={0.15} />
         </ParallaxElement>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {team.map((member, index) => (
             <ParallaxElement key={index} offset={20 + index * 10} direction="up">
               <ScrollReveal direction="up" delay={0.2 * index}>
                 <ThreeDCard>
-                  <GlassCard className="flex flex-col h-full">
-                    <div className="mb-4 h-48 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg flex items-center justify-center relative overflow-hidden group">
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      <div className="w-32 h-32 rounded-full bg-gradient-to-r from-cyan-500/30 to-purple-600/30 flex items-center justify-center relative z-10">
-                        <span className="text-4xl font-bold text-white">{member.name.charAt(0)}</span>
+                  <GlassCard className="flex flex-col h-full overflow-hidden p-0">
+                    {" "}
+                    {/* Removed padding */}
+                    <div className="flex flex-col h-full">
+                      {/* Image Section - Top Half */}
+                      <div className="relative h-[250px] w-full">
+                        {/* Profile Image */}
+                        <Image
+                          src={member.image || "/placeholder.svg"}
+                          alt={member.name}
+                          fill
+                          className="object-cover object-center"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+
+                        {/* Gradient Overlay - blends image into content */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900"></div>
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
 
-                    <h3 className="text-xl font-semibold text-white">{member.name}</h3>
-                    <p className="text-cyan-400 mb-3">{member.role}</p>
+                      {/* Content Section */}
+                      <div className="flex-grow p-6 bg-gradient-to-t from-slate-900 to-slate-900/95">
+                        <h3 className="text-xl font-semibold text-white">{member.name}</h3>
+                        <p className="text-cyan-400 mb-3">{member.role}</p>
 
-                    <p className="text-gray-400 mb-4 flex-grow">{member.bio}</p>
+                        <p className="text-gray-300 mb-4">{member.bio}</p>
 
-                    <div className="space-y-2 mt-auto">
-                      {member.email && (
-                        <div className="flex items-center group">
-                          <Mail className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                          <a href={`mailto:${member.email}`} className="text-gray-300 hover:text-cyan-400 text-sm">
-                            {member.email}
-                          </a>
+                        <div className="space-y-2 mt-4">
+                          {member.email && (
+                            <div className="flex items-center group">
+                              <Mail className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                              <a href={`mailto:${member.email}`} className="text-gray-300 hover:text-cyan-400 text-sm">
+                                {member.email}
+                              </a>
+                            </div>
+                          )}
+
+                          {member.phone && (
+                            <div className="flex items-center group">
+                              <Phone className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                              <a href={`tel:${member.phone}`} className="text-gray-300 hover:text-cyan-400 text-sm">
+                                {member.phone}
+                              </a>
+                            </div>
+                          )}
+
+                          {member.linkedin && (
+                            <div className="flex items-center group">
+                              <Linkedin className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                              <a
+                                href={member.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-gray-300 hover:text-cyan-400 text-sm"
+                              >
+                                LinkedIn Profile
+                              </a>
+                            </div>
+                          )}
                         </div>
-                      )}
-
-                      {member.phone && (
-                        <div className="flex items-center group">
-                          <Phone className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                          <a href={`tel:${member.phone}`} className="text-gray-300 hover:text-cyan-400 text-sm">
-                            {member.phone}
-                          </a>
-                        </div>
-                      )}
-
-                      {member.linkedin && (
-                        <div className="flex items-center group">
-                          <Linkedin className="h-4 w-4 text-cyan-400 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                          <a
-                            href={member.linkedin}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-300 hover:text-cyan-400 text-sm"
-                          >
-                            LinkedIn Profile
-                          </a>
-                        </div>
-                      )}
+                      </div>
                     </div>
                   </GlassCard>
                 </ThreeDCard>
