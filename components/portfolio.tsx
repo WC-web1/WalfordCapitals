@@ -95,7 +95,7 @@ export default function Portfolio() {
         </div>
 
         <div className="mt-16 relative">
-       
+          <IsometricGrid scrollY={scrollY} />
 
           
         </div>
