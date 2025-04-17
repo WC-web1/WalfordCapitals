@@ -278,9 +278,9 @@ export default function Contact() {
                 <div>
                   <h4 className="text-lg font-medium text-white mb-1">Office</h4>
                   <p className="text-gray-400">
-                    Walford Capitals Headquarters
-                    <br />
-                    Financial District, Mumbai
+                    
+                    
+                    IIT Madras, Chennai
                     <br />
                     India
                   </p>
