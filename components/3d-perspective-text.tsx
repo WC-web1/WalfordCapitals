@@ -1,17 +1,48 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useInView } from "framer-motion"
 
 interface PerspectiveTextProps {
   text: string
-  scrollY: number
+  scrollY?: number // Made optional since we won't use it
   className?: string
 }
 
 export default function PerspectiveText({ text, scrollY, className = "" }: PerspectiveTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<number>(0)
   const isInView = useInView(containerRef, { once: false, amount: 0.3 })
+  const [time, setTime] = useState(0)
+
+  useEffect(() => {
+    if (!containerRef.current || !isInView) return
+
+    let lastTime = 0
+    const fps = 60
+
+    // Animation loop that runs continuously
+    const animate = (timestamp: number) => {
+      if (!lastTime) lastTime = timestamp
+      const deltaTime = timestamp - lastTime
+
+      // Update at desired frame rate
+      if (deltaTime > 1000 / fps) {
+        setTime((prev) => prev + 0.01) // Increment time for animations
+        lastTime = timestamp
+      }
+
+      animationRef.current = requestAnimationFrame(animate)
+    }
+
+    // Start the animation loop
+    animationRef.current = requestAnimationFrame(animate)
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationRef.current)
+    }
+  }, [isInView])
 
   useEffect(() => {
     if (!containerRef.current || !isInView) return
@@ -19,16 +50,15 @@ export default function PerspectiveText({ text, scrollY, className = "" }: Persp
     const container = containerRef.current
     const letters = container.querySelectorAll(".perspective-letter")
 
-    // Update perspective based on scroll position
+    // Update perspective based on time
     letters.forEach((letter, index) => {
       const element = letter as HTMLElement
-      const progress = (scrollY % 1000) / 1000
 
-      // Calculate rotation and translation based on letter position and scroll
+      // Calculate rotation and translation based on letter position and time
       // More subtle rotation for a professional look
-      const rotateY = Math.sin(progress * Math.PI * 2 + index * 0.2) * 15
-      const rotateX = Math.cos(progress * Math.PI * 2 + index * 0.2) * 8
-      const translateZ = Math.sin(progress * Math.PI * 2 + index * 0.1) * 10
+      const rotateY = Math.sin(time * Math.PI + index * 0.2) * 15
+      const rotateX = Math.cos(time * Math.PI + index * 0.2) * 8
+      const translateZ = Math.sin(time * Math.PI + index * 0.1) * 10
 
       // Apply transformations
       element.style.transform = `
@@ -38,11 +68,11 @@ export default function PerspectiveText({ text, scrollY, className = "" }: Persp
       `
 
       // Tron Legacy inspired glow effect - pulsing blue glow
-      const pulseIntensity = Math.sin(Date.now() * 0.002 + index * 0.5) * 0.5 + 0.5
+      const pulseIntensity = Math.sin(time * 3 + index * 0.5) * 0.5 + 0.5
 
       // Professional color scheme - deep blues and cyans with subtle variation
       const baseHue = 210 // Blue base
-      const hueVariation = (index * 3) % 20 // Subtle variation
+      const hueVariation = (index * 3 + time * 10) % 20 // Subtle variation with time
       const hue = baseHue + hueVariation
 
       // Set the color and glow based on the pulse
@@ -56,15 +86,14 @@ export default function PerspectiveText({ text, scrollY, className = "" }: Persp
       element.style.borderBottom = `1px solid hsla(${hue + 20}, 100%, ${70 + pulseIntensity * 30}%, ${0.3 + pulseIntensity * 0.7})`
     })
 
-    // Add scanning line effect - Inspired by Tron Legacy
-    // This will create a scanning line that moves across the text
+    // Add scanning line effect (Tron-style) - continuous movement
     const scanLine = container.querySelector(".scan-line") as HTMLElement
     if (scanLine) {
-      const scanProgress = (Date.now() % 3000) / 3000
+      const scanProgress = (time % 3) / 3 // Complete cycle every 3 time units
       scanLine.style.left = `${scanProgress * 100}%`
       scanLine.style.opacity = `${Math.sin(scanProgress * Math.PI) * 0.7 + 0.3}`
     }
-  }, [scrollY, isInView, text])
+  }, [time, isInView, text])
 
   return (
     <div
