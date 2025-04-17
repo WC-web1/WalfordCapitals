@@ -85,41 +85,51 @@ export default function NeuralNetwork({ scrollY }: NeuralNetworkProps) {
 
         // Connect to all neurons in the next layer
         if (neuron.layer < layers.length - 1) {
-          const nextLayerStart = layers.slice(0, neuron.layer).reduce((sum, count) => sum + count, 0)
+          // Find the starting index of the next layer in the neurons array
+          let nextLayerStartIndex = 0
+          for (let l = 0; l < neuron.layer + 1; l++) {
+            nextLayerStartIndex += layers[l]
+          }
+
           const nextLayerSize = layers[neuron.layer + 1]
 
           for (let j = 0; j < nextLayerSize; j++) {
-            const targetNeuron = neurons[nextLayerStart + j]
+            // Calculate the index of the target neuron in the neurons array
+            const targetIndex = nextLayerStartIndex + j
 
-            // Calculate activation based on time and position
-            const time = Date.now() * 0.001
-            const activation = Math.sin(time + neuron.index * 0.5 + targetNeuron.index * 0.3) * 0.5 + 0.5
+            if (targetIndex < neurons.length) {
+              const targetNeuron = neurons[targetIndex]
 
-            // Draw connection with gradient based on activation
-            const gradient = ctx.createLinearGradient(neuron.x, neuron.y, targetNeuron.x, targetNeuron.y)
+              // Calculate activation based on time and position
+              const time = Date.now() * 0.001
+              const activation = Math.sin(time + neuron.index * 0.5 + targetNeuron.index * 0.3) * 0.5 + 0.5
 
-            gradient.addColorStop(0, `rgba(6, 182, 212, ${activation * 0.7})`)
-            gradient.addColorStop(1, `rgba(124, 58, 237, ${activation * 0.7})`)
+              // Draw connection with gradient based on activation
+              const gradient = ctx.createLinearGradient(neuron.x, neuron.y, targetNeuron.x, targetNeuron.y)
 
-            ctx.beginPath()
-            ctx.moveTo(neuron.x + perspectiveShift * (neuron.layer / (layers.length - 1)), neuron.y)
-            ctx.lineTo(targetNeuron.x + perspectiveShift * (targetNeuron.layer / (layers.length - 1)), targetNeuron.y)
-            ctx.strokeStyle = gradient
-            ctx.lineWidth = activation * 2 + 0.5
-            ctx.stroke()
+              gradient.addColorStop(0, `rgba(6, 182, 212, ${activation * 0.7})`)
+              gradient.addColorStop(1, `rgba(124, 58, 237, ${activation * 0.7})`)
 
-            // Draw pulse animation along the connection
-            const pulsePosition = (time * 0.5 + neuron.index * 0.1 + targetNeuron.index * 0.05) % 1
-            const pulseX =
-              neuron.x +
-              (targetNeuron.x - neuron.x) * pulsePosition +
-              perspectiveShift * ((neuron.layer + pulsePosition) / (layers.length - 1))
-            const pulseY = neuron.y + (targetNeuron.y - neuron.y) * pulsePosition
+              ctx.beginPath()
+              ctx.moveTo(neuron.x + perspectiveShift * (neuron.layer / (layers.length - 1)), neuron.y)
+              ctx.lineTo(targetNeuron.x + perspectiveShift * (targetNeuron.layer / (layers.length - 1)), targetNeuron.y)
+              ctx.strokeStyle = gradient
+              ctx.lineWidth = activation * 2 + 0.5
+              ctx.stroke()
 
-            ctx.beginPath()
-            ctx.arc(pulseX, pulseY, activation * 3, 0, Math.PI * 2)
-            ctx.fillStyle = `rgba(255, 255, 255, ${activation * 0.8})`
-            ctx.fill()
+              // Draw pulse animation along the connection
+              const pulsePosition = (time * 0.5 + neuron.index * 0.1 + targetNeuron.index * 0.05) % 1
+              const pulseX =
+                neuron.x +
+                (targetNeuron.x - neuron.x) * pulsePosition +
+                perspectiveShift * ((neuron.layer + pulsePosition) / (layers.length - 1))
+              const pulseY = neuron.y + (targetNeuron.y - neuron.y) * pulsePosition
+
+              ctx.beginPath()
+              ctx.arc(pulseX, pulseY, activation * 3, 0, Math.PI * 2)
+              ctx.fillStyle = `rgba(255, 255, 255, ${activation * 0.8})`
+              ctx.fill()
+            }
           }
         }
       }
