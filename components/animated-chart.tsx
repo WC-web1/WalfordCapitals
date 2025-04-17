@@ -190,21 +190,7 @@ export default function AnimatedChart() {
         ctx.stroke()
         ctx.setLineDash([])
 
-        // Add prediction label if fully drawn
-        if (predictionPointsToDraw >= predictionLine.length) {
-          const endX = predictionLine[predictionLine.length - 1].x
-          const endY = predictionLine[predictionLine.length - 1].y
-
-          ctx.fillStyle = "#0ea5e9"
-          ctx.beginPath()
-          ctx.arc(endX, endY, 4, 0, Math.PI * 2)
-          ctx.fill()
-
-          ctx.font = "12px sans-serif"
-          ctx.fillStyle = "#0ea5e9"
-          ctx.textAlign = "right"
-          ctx.fillText("Predicted: -9.72%", endX - 10, endY - 10)
-        }
+        
       }
 
       // Draw actual line (solid)
@@ -220,38 +206,10 @@ export default function AnimatedChart() {
         ctx.lineWidth = 3
         ctx.stroke()
 
-        // Add actual label if fully drawn
-        if (actualPointsToDraw >= actualLine.length) {
-          const endX = actualLine[actualLine.length - 1].x
-          const endY = actualLine[actualLine.length - 1].y
-
-          ctx.fillStyle = "#ef4444"
-          ctx.beginPath()
-          ctx.arc(endX, endY, 4, 0, Math.PI * 2)
-          ctx.fill()
-
-          ctx.font = "12px sans-serif"
-          ctx.fillStyle = "#ef4444"
-          ctx.textAlign = "right"
-          ctx.fillText("Actual: -16.32%", endX - 10, endY - 10)
-        }
+       
       }
 
-      // Draw peak marker
-      if (progress > 0.6 && mainPointsToDraw >= mainLine.length) {
-        const peakX = mainLine[mainLine.length - 1].x
-        const peakY = mainLine[mainLine.length - 1].y
-
-        ctx.beginPath()
-        ctx.arc(peakX, peakY, 5, 0, Math.PI * 2)
-        ctx.fillStyle = "#fbbf24"
-        ctx.fill()
-
-        ctx.font = "12px sans-serif"
-        ctx.fillStyle = "#fbbf24"
-        ctx.textAlign = "center"
-        ctx.fillText("Peak", peakX, peakY - 10)
-      }
+      
 
       // Draw legend
       if (progress > 0.8) {
