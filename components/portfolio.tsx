@@ -41,9 +41,7 @@ export default function Portfolio() {
         <div className="mb-16 relative">
           <NeuralNetwork scrollY={scrollY} />
 
-          <ParallaxElement className="absolute -top-10 right-0 z-0 hidden md:block" offset={30} direction="right">
-            <Image src="/images/ai-brain.svg" alt="AI Brain" width={150} height={150} className="opacity-20" />
-          </ParallaxElement>
+          
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
@@ -97,11 +95,9 @@ export default function Portfolio() {
         </div>
 
         <div className="mt-16 relative">
-          <IsometricGrid scrollY={scrollY} />
+       
 
-          <ParallaxElement className="absolute -bottom-10 left-0 z-0 hidden md:block" offset={25} direction="left">
-            <Image src="/images/data-flow.svg" alt="Data Flow" width={180} height={180} className="opacity-20" />
-          </ParallaxElement>
+          
         </div>
       </div>
     </section>
